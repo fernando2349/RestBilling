@@ -21,5 +21,7 @@ namespace RestBilling.Models
         public Order Order { get; set; }
         [ForeignKey("ProductId")]
         public  Product Product { get; set; }
+
+        public decimal? subtotal { get; set; } = 0;
     }
 }

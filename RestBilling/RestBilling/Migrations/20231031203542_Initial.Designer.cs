@@ -12,8 +12,8 @@ using RestBilling.Data;
 namespace RestBilling.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231025213702_initial-models-wihtoutvalidatios")]
-    partial class initialmodelswihtoutvalidatios
+    [Migration("20231031203542_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -183,6 +183,9 @@ namespace RestBilling.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("subtotal")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
