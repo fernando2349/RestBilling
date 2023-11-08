@@ -22,6 +22,33 @@ namespace RestBilling.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ApiRestBilling.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("OrderNumber")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("ApiRestBilling.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -34,7 +61,6 @@ namespace RestBilling.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Package")
-                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
@@ -104,11 +130,11 @@ namespace RestBilling.Migrations
 
             modelBuilder.Entity("RestBilling.Models.Customer", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -135,37 +161,9 @@ namespace RestBilling.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
-                    b.HasKey("id");
-
-                    b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("RestBilling.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("OrderNumber")
-                        .HasMaxLength(128)
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("TotalAnount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Orders");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("RestBilling.Models.OrderItem", b =>
@@ -185,10 +183,10 @@ namespace RestBilling.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("UnitPrice")
+                    b.Property<decimal?>("Subtotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("subtotal")
+                    b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -198,6 +196,17 @@ namespace RestBilling.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("ApiRestBilling.Models.Order", b =>
+                {
+                    b.HasOne("RestBilling.Models.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("ApiRestBilling.Models.Product", b =>
@@ -211,20 +220,9 @@ namespace RestBilling.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("RestBilling.Models.Order", b =>
-                {
-                    b.HasOne("RestBilling.Models.Customer", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("RestBilling.Models.OrderItem", b =>
                 {
-                    b.HasOne("RestBilling.Models.Order", "Order")
+                    b.HasOne("ApiRestBilling.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -241,6 +239,11 @@ namespace RestBilling.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ApiRestBilling.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
             modelBuilder.Entity("ApiRestBilling.Models.Product", b =>
                 {
                     b.Navigation("OrderItems");
@@ -254,11 +257,6 @@ namespace RestBilling.Migrations
             modelBuilder.Entity("RestBilling.Models.Customer", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("RestBilling.Models.Order", b =>
-                {
-                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

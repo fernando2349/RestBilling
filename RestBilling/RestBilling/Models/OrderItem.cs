@@ -9,6 +9,7 @@ namespace RestBilling.Models
 
         [Key]
         public int Id { get; set; }
+
         [Required]
         public int OrderId { get; set; }
         [Required]
@@ -18,10 +19,10 @@ namespace RestBilling.Models
         [Required]
         public int Quantity { get; set; } = 1;
         [ForeignKey("OrderId")]
-        public Order Order { get; set; }
+        public Order? Order { get; set; }
         [ForeignKey("ProductId")]
-        public  Product Product { get; set; }
-
-        public decimal? subtotal { get; set; } = 0;
+        public  Product? Product { get; set; }
+     
+        public decimal? Subtotal { get; set; }
     }
 }
