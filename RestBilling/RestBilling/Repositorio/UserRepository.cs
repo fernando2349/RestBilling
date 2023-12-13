@@ -1,10 +1,10 @@
 ﻿using ApiRestBilling.Data;
 using ApiRestBilling.Models.DTOs;
+using ApiRestBilling.Repositorio.IRepository;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using RestBilling.Models;
-using RestBilling.Repositorio.IRepository;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -194,20 +194,19 @@ namespace ApiRestBilling.Repositorio
             throw new NotImplementedException();
         }
 
-        Task IUserRepository.GetAllUsersAsync()
+        Task<ICollection<UserDTO>> IUserRepository.GetAllUsersAsync()
         {
             throw new NotImplementedException();
         }
 
-        Task IUserRepository.LoginAsync(UserLoginDTO usuarioLoginDto)
+        Task<UserDTO> IUserRepository.GetByIdAsync(string id)
         {
             throw new NotImplementedException();
         }
 
-        Task IUserRepository.RegisterAsync(UserRegisterDTO usuarioRegistroDto)
+        Task<UserDTO> IUserRepository.RegisterAsync(UserRegisterDTO userRegisterDTO)
         {
             throw new NotImplementedException();
         }
-
     }
 }

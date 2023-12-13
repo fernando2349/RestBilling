@@ -1,6 +1,7 @@
 using ApiRestBilling.Data;
 using ApiRestBilling.Mappers;
 using ApiRestBilling.Repositorio;
+using ApiRestBilling.Repositorio.IRepository;
 using ApiRestBilling.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -8,19 +9,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RestBilling.Models;
-using RestBilling.Repositorio.IRepository;
 using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IPurchaseOrdersService, PurchaseOrdersService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

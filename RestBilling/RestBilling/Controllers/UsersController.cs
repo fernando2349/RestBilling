@@ -1,9 +1,9 @@
 ﻿using ApiRestBilling.Models;
 using ApiRestBilling.Models.DTOs;
+using ApiRestBilling.Repositorio.IRepository;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RestBilling.Repositorio.IRepository;
 using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -35,7 +35,7 @@ namespace ApiRestBilling.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
-            var listUsers = await _usRepo.GetAllUsers();
+            var listUsers = await _usRepo.GetAllUsersAsync();
 
             if (listUsers == null || !listUsers.Any()) // Check if the list is null or empty
             {
@@ -55,7 +55,7 @@ namespace ApiRestBilling.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(string usuarioId)
         {
-            var itemUsuario = await _usRepo.Get(usuarioId);
+            var itemUsuario = await _usRepo.GetByIdAsync(usuarioId);
 
             if (itemUsuario == null)
             {
@@ -82,7 +82,7 @@ namespace ApiRestBilling.Controllers
                 return BadRequest(_respuestaApi);
             }
 
-            var usuario = await _usRepo.Registro(usuarioRegistroDto);
+            var usuario = await _usRepo.RegisterAsync(usuarioRegistroDto);
             if (usuario == null)
             {
                 _respuestaApi.StatusCode = HttpStatusCode.BadRequest;
@@ -103,7 +103,7 @@ namespace ApiRestBilling.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login([FromBody] UserLoginDTO usuarioLoginDto)
         {
-            var respuestaLogin = await _usRepo.Login(usuarioLoginDto);
+            var respuestaLogin = await _usRepo.LoginAsync(usuarioLoginDto);
 
             if (respuestaLogin.User == null || string.IsNullOrEmpty(respuestaLogin.Token))
             {
