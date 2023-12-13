@@ -1,5 +1,5 @@
-﻿using ApiRestBilling.Models;
-using RestBilling.Data;
+﻿using ApiRestBilling.Data;
+using ApiRestBilling.Models;
 using RestBilling.Models;
 
 namespace ApiRestBilling.Services

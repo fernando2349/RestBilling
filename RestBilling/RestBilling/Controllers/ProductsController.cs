@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApiRestBilling.Models;
-using RestBilling.Data;
+using ApiRestBilling.Data;
 
 namespace ApiRestBilling.Controllers
 {

@@ -1,7 +1,8 @@
-﻿using ApiRestBilling.Models;
+﻿using ApiRestBilling.Data;
+using ApiRestBilling.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RestBilling.Data;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

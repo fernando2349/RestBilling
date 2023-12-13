@@ -1,6 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RestBilling.Data;
+using ApiRestBilling.Data;
+using ApiRestBilling.Models;
+using Microsoft.AspNetCore.Authorization;
 using RestBilling.Models;
 
 namespace ApiRestBilling.Controllers
@@ -17,6 +24,7 @@ namespace ApiRestBilling.Controllers
         }
 
         // GET: api/Customers
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
@@ -28,6 +36,7 @@ namespace ApiRestBilling.Controllers
         }
 
         // GET: api/Customers/5
+        [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
@@ -47,6 +56,7 @@ namespace ApiRestBilling.Controllers
 
         // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "admin, registrado")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
@@ -78,6 +88,7 @@ namespace ApiRestBilling.Controllers
 
         // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
@@ -92,6 +103,7 @@ namespace ApiRestBilling.Controllers
         }
 
         // DELETE: api/Customers/5
+        [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
